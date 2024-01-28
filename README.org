@@ -1,0 +1,38 @@
+* Example of lsp semantic highlighting not triggering
+
+  Bare bones dummy major mode with accompanying bare bones language
+  server protocol.
+
+* Setup
+  - First clone this repository and cd to that directory.
+
+    : $ cd <project directory>
+    : $ export DUMMYLSPPATH=$(pwd)
+    
+    The server is built upon [[https://pygls.readthedocs.io/en/latest/][pygls]], a Python framework for creating
+    LSP's.  I used Python 3.12, but I think any Python3 version should
+    work.  Install with the following
+    
+    : $ python3 -m venv .venv
+    : $ .venv/bin/python -m pip install --upgrade pip
+    : $ .venv/bin/python -m pip install pygls
+
+  - Make a script to invoke ~pygls~ using this virtual environment
+    like so:
+
+    : $DUMMYLSPPATH/.venv/bin/pytyhon dummylsp.py
+
+    Call the script ~dummylsp~ and make sure it's in your PATH.
+
+  - Eval ~dummy-mode.el~ to define the dummy mode.
+  - Eval ~emacs.el~ to connect this dummy mode to the lsp.
+  - Open up ~mydoc.dummy~
+  - ~M-x dummy-mode~
+  - ~M-x lsp~
+  - Note that the comment is not highlighted.  Move onto the comment and test:
+	~M-:~ -> ~(get-text-property (point) 'face)~.
+  - Check ~font-lock-fontified~
+  - ~M-:~ -> ~(setq font-lock-fontified t)~
+  - You might need to make some changes to the document to trigger the
+    highlighting request, but it should fontify at this point.
+  - Alternative to the last step, try running ~font-lock-ensure~.
